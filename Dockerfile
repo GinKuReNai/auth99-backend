@@ -23,7 +23,7 @@ WORKDIR /src
 
 # ヘルスチェックのためのcurlをインストール
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl
+    && apt-get install -y --no-install-recommends curl python3-pymysql
 
 COPY --from=build /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=build /usr/local/bin /usr/local/bin

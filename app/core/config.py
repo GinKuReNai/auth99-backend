@@ -31,5 +31,10 @@ class Settings(BaseSettings):
     MYSQL_PASSWORD: str
     MYSQL_DB: str = ""
 
+    @computed_field
+    @property
+    def sqlalchemy_database_url(self) -> str:
+        return f"mysql+pymysql://{self.MYSQL_USER}:{self.MYSQL_PASSWORD}@{self.MYSQL_SERVER}:{self.MYSQL_PORT}/{self.MYSQL_DB}"
+
 
 settings = Settings()

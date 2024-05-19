@@ -2,6 +2,8 @@ import os
 from logging.config import fileConfig
 
 from alembic import context
+from app.core.config import settings
+from app.core.database import Base
 from sqlalchemy import engine_from_config, pool
 
 # this is the Alembic Config object, which provides
@@ -18,7 +20,7 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 
-from app.core.database import Base
+from app.models import companies, users, works  # noqa: F401
 
 target_metadata = Base.metadata
 
@@ -26,15 +28,6 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-
-
-def get_url():
-    user = os.getenv("MYSQL_USER", "mysql")
-    password = os.getenv("MYSQL_PASSWORD", "")
-    server = (os.getenv("MYSQL_SERVER", "db"),)
-    port = (os.getenv("MYSQL_PORT", "3306"),)
-    db = os.getenv("MYSQL_DB", "")
-    return f"mysql+pymysql://{user}:{password}@{server}:{port}/{db}"
 
 
 def run_migrations_offline() -> None:
@@ -74,7 +67,7 @@ def run_migrations_online() -> None:
         poolclass=pool.NullPool,
     )
 
-    url = settings.sqlalchemy_database_url()
+    url = settings.sqlalchemy_database_url
 
     with connectable.connect() as connection:
         context.configure(url=url, connection=connection, target_metadata=target_metadata)
